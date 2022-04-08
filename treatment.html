@@ -1,0 +1,4008 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf=8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Goro Collins"/>
+    <title>GCH Medication guide</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> 
+    <script type="text/javascript" src="medFunction.js"></script>
+    <link rel="stylesheet" href="med.css">
+  </head>
+
+  <body>
+    <div>
+     <img src="Gertrudes-Childrens-Hospital-Logo.jpg" alt="Gertrudes Childrens Hospital Logo">
+     <h1 class="center">Regular Medications Calculator</h1>
+     <p class="center">This calculator assists you to get correct medication dosage</p>
+    </div>
+    <div>
+     <form name="patient's data">
+        <fieldset>
+          <Legend style="font-size:20px;" class="center">Patient parameters:</Legend>
+         Weight(kg):
+         <input type="number" id="weight" name="weight" min="0" step="0.01" placeholder="Enter weight of patient" class="left"><br><br/>
+         Height(cm):
+         <input type="number" id="height" name="height" min="0" step="0.01" placeholder="Enter height of patient" class="left"><br/><br/>
+         <label for="age">Age:</label><br/><br/>
+         <input type="number" id="age" name=id min="0" step="1" placeholder="Enter age in years"><span>Years</span><input type="number" id="age" name=id min="0" step="1" placeholder="Enter age in months"><span>Months</span><br/><br/>
+         <!--<button type="button" onclick="ageCount()">Calculate age</button><br/><br/>-->
+         <button type="button" onclick="bsaCalc()">Calcualte BSA</button>
+        </fieldset>
+     </form><br/><br/>
+     <form name="Diag" id="picker">
+       <label for="diag">Pick a diagnosis:</label>
+       <select id="diag" name="diag" onchange="diagPicker()">
+        <option value="select">Select</option>
+        <option value="1">Acute Bacterial Meningitis</option>
+        <option value="2">Acute Bacterial Sinusitis</option>
+        <option value="3">Acute Gastroenteritis</option>
+        <option value="4">Acute Otitis Media</option>
+        <option value="5">Allergic Rhintis</option>
+        <option value="6">Aseptic Meningitis</option>
+        <option value="7">Aspiration Pneumonia</option>
+        <option value="8">Asthma</option>
+        <option value="9">Balanitis</option>
+        <option value="10">Burns</option>
+        <option value="11">Candidiasis Cutaneous</option>
+        <option value="12">Candidiasis Mucosal</option>
+        <option value="13">Candidiasis Systemic</option>
+        <option value="14">Coma</option>
+        <option value="15">Congestive Heart Failure</option>
+        <option value="16">Croup</option>
+        <option value="17">Cryptococcal Meningitis</option>
+        <option value="18">Hypertension</option>
+        <option value="19">Measles</option>
+        <option value="20">Mumps</option>
+        <option value="21">Non Severe Malaria</option>
+        <option value="22">Pneumocystis Pneumonia</option>
+        <option value="23">Pneumonia</option>
+        <option value="24">Rheumatic Fever</option>
+        <option value="25">Severe Malaria</option>
+        <option value="26">Status Epilepticus</option>
+        <option value="27">Tonsillopharyngitis</option>
+        <option value="28">Tuberculosis</option>
+        <option value="29">Urinary Tract Infection</option> 
+       </select>
+      </form><br/>
+     <p id="bsa" class="none center"></p>
+     <p id="birth" class="none center"></p>
+    </div>
+    <p id="par" class="none center"><b>Please select a valid diagnosis</b></p>
+
+
+    <!--Pneumonia content-->
+    <div id="dPneu" class="none scrollbar">
+      <table style="max-width: 100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>First line</td><!-- removed oral -->
+          <td>Amoxicillin</td>
+          <td>Syrup/Capsules</td>
+          <td class="none"> </td>
+          <td class="none"> </td>
+          <td class="none"> </td>
+          <td><button type="button" onclick="syrup()">Calculate</button></td>
+          <td id="mindose"></td>
+          <td id="maxdose"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>7</td>
+          <td>High dose</td>
+        </tr>
+        
+        <tr>  
+          <td>First line</td> <!-- removed Injectable -->
+          <td>Crystalline Penicillin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="crystal()">Calculate</button></td>
+          <td id="crys0"></td>
+          <td id="crys1"></td>
+          <td>1MU</td>
+          <td>IV</td>
+          <td>5-hourly</td>
+          <td>6</td>
+          <td>9</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Azithromycin</td>
+          <td>Syrup/Tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="azithro()">Calculate</button></td>
+          <td id="azmin"></td>
+          <td id="azmax"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Erythromycin</td>
+          <td>Syrup/Tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none">30mg</td>
+          <td><button type="button" onclick="erythro()">Calculate</button></td>
+          <td id="ermin"></td>
+          <td id="ermax"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Clarithromycin</td>
+          <td>Injection/Syrup/Tablet</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="clarith()">Calculate</button></td>
+          <td id="clath1"></td>
+          <td id="clath2"></td>
+          <td>500mg</td>
+          <td>PO/IV</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Second line</td>
+          <td>Cefuroxime</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ceruInj()">Calculate</button></td>
+          <td id="ceru1"></td>
+          <td id="ceru2"></td>
+          <td>1500mg</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td> </td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefuroxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ceruSyr()">Calculate</button></td>
+          <td id="syr1"></td>
+          <td id="syr2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>5</td>
+          <td>10</td>
+          <td>Maximum 250mg per dose for age under 12 years</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>CoAmoxiclav</td>
+          <td>Injection</td>
+          <td class="none"> </td>
+          <td class="none"> </td>
+          <td class="none"> </td>
+          <td><button type="button" onclick="coaInj()">Calculate</button></td>
+          <td id="coax1"></td>
+          <td id="coax2"></td>
+          <td>1.2g</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td> </td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>CoAmoxiclav</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="coaTab()">Calculate</button></td>
+          <td id="tab1"></td>
+          <td id="tab2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td> </td>
+        </tr>
+
+        <tr>
+          <td>Staphylococcal</td>
+          <td>Flucloxacillin</td>
+          <td>Injection/Syrup/Capsule</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="staphy()">Calculate</button></td>
+          <td id="staph1"></td>
+          <td id="staph2"></td>
+          <td>1g</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Third line</td>
+          <td>Ceftriaxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="thirl()">Calculate</button></td>
+          <td id="lir1"></td>
+          <td id="lir2"></td>
+          <td>1g</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td>Normal dosage</td>
+        </tr> 
+        <tr>
+          <td>Viral</td>
+          <td>Oseltamivir</td>
+          <td>Capsule/Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="oseltam()">Calculate</button></td>
+          <td id="sus1"></td>
+          <td id="sus2"></td>
+          <td>75mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>5</td>
+          <td>10</td>
+          <td>10 days if immunocompromised</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>cough, fever and/or rapid breathing</strong> ascertained and documented</li>
+        <li class="disklist"><strong>Respiratory rate, SPO2 Oxygenation assessment/comment</strong></li>
+        <li class="disklist">Given <strong>appropriate antibiotics</strong>(in line with pneumonia classification)</li>
+        <li class="disklist">Supportive treatment given <strong>(oxygen as needed, antipyretics)</strong> as appropriate</li>
+        <li class="disklist">Documented <strong>Follow up</strong>  within <strong>48 hours</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Tonsillopharyngitis content-->
+    <div id="dTons" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>Supportive</td>
+          <td>Normal Saline</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>10 mL</td>
+          <td>15 mL</td>
+          <td></td>
+          <td>Gargle</td>
+          <td>4-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td>For those aged above 4 years</td>
+        </tr>
+
+        <tr>
+          <td>Supportive</td>
+          <td>Chlorhexidine</td>
+          <td>Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>10 mL</td>
+          <td>15 mL</td>
+          <td></td>
+          <td>Gargle</td>
+          <td>4-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td>For those aged above 10 years</td>
+        </tr>
+
+        <tr>
+          <td>Analgesic</td>
+          <td>Paracetamol</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button"  onclick="para()">Calculate</button></td>
+          <td id="sat1"></td>
+          <td id="sat2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>As needed</td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Amoxicillin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="flAmox()">Calculate</button></td>
+          <td id="line1"></td>
+          <td id="line2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>8-hourly</td>
+          <td>5</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Cefadroxil</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cefad()">Calculate</button></td>
+          <td id="drox1"></td>
+          <td id="drox2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>5</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Erythromycin</td>
+          <td>Syrup/tablet</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="peniryth()">Calculate</button></td>
+          <td id="tyrup1"></td>
+          <td id="tyrup2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>5</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Azithromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="penizith()">Calculate</button></td>
+          <td id="aller1"></td>
+          <td id="aller2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>3</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Clarithromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="peniclath()">Calculate</button></td>
+          <td id="mycin1"></td>
+          <td id="mycin2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>CoAmoxiclav</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="secAmiclav()">Calculate</button></td>
+          <td id="sectab1"></td>
+          <td id="sectab2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefuroxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="secCeru()">Calculate</button></td>
+          <td id="fox1"></td>
+          <td id="fox2"></td>
+          <td>250mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Maximum 250mg per dose for age under 12 years</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Azithromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="secAzith()">Calculate</button></td>
+          <td id="let1"></td>
+          <td id="let2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>3</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Third line</td>
+          <td>Ceftriaxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ceftTh()">Calculate</button></td>
+          <td id="cef1"></td>
+          <td id="cef2"></td>
+          <td>1g</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Supportive</td>
+          <td>Povidone Iodine</td>
+          <td>Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="povid()">Calculate</button></td>
+          <td id="povid1">10 mL</td>
+          <td id="povid2">10 mL</td>
+          <td></td>
+          <td>Gargle</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>14</td>
+          <td>For those aged above 6 years</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>fever, painful swallowing OR sore throat,</strong> foul breath, <strong>drooling</strong></li>
+        <li class="disklist">On examination: <strong>fever, inflamed tonsils,</strong> presence or absence of exudates, with or without enlarged cervical nodes</li>
+        <li class="disklist">Management: appropriate antibiotics and analgesia as indicated</li>
+        <li class="disklist"><strong>Patient education</strong> on medication compliance, when to return.</li>
+        <li class="disklist"><strong>Follow-up</strong> (referral or review)</li>
+      </ul>
+    </div>
+
+
+    <!--Acute Otitis Media content-->
+    <div id="dAcu" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Amoxicillin</td>
+          <td>Syrup/Capsule</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="amoxiCap()">Calculate</button></td>
+          <td id="med1"></td>
+          <td id="med2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Erythromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="erythAllerg()">Calculate</button></td>
+          <td id="syt1"></td>
+          <td id="syt2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>5</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Azithromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="azithAllerg()">Calculate</button></td>
+          <td id="zith1"></td>
+          <td id="zith2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>3</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Penicillin allergy</td>
+          <td>Clarithromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="clathAllerg()">Calculate</button></td>
+          <td id="rith1"></td>
+          <td id="rith2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>CoAmoxiclav</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="coaxLine()">Calculate</button></td>
+          <td id="clav1"></td>
+          <td id="clav2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefuroxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ceruLine()">Calculate</button></td>
+          <td id="xime1"></td>
+          <td id="xime2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td>Maximum 250mg per dosefor age under 12 years</td>
+        </tr>
+
+        <tr>
+          <td>Alternate</td>
+          <td>Cefixime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="altCef()">Calculate</button></td>
+          <td id="alt1"></td>
+          <td id="alt2"></td>
+          <td>200mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Alternate</td>
+          <td>Cefpodoxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="altPod()">Calculate</button></td>
+          <td id="nat1"></td>
+          <td id="nat2"></td>
+          <td>200mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Pain/Fever</td>
+          <td>Paracetamol</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="parFev()">Calculate</button></td>
+          <td id="mol1"></td>
+          <td id="mol2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>4-6-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Pain/Fever</td>
+          <td>Ibuprofen</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ibFev()">Calculate</button></td>
+          <td id="prof1"></td>
+          <td id="prof2"></td>
+          <td>400mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist"><strong>Pain</strong> in the ear or <strong>irritability</strong> or <strong>tugging</strong> on the ear documented if appropriate</li>
+        <li class="disklist">Presence or absence of <strong>fever or other systemic symptoms</strong> documented</li>
+        <li class="disklist">Examination of the ear drum documented e.g. <strong>erythema, bulging, opacity, dullness, discharge</strong></li>
+        <li class="disklist"><strong>Right antibiotics</strong> and analgesics prescribed</li>
+        <li class="disklist">Documented <strong>follow up</strong> review</li>
+      </ul>
+    </div>
+
+
+    <!--Allergic Rhintis content-->
+    <div id="dRhin" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Decongestion</td>
+          <td>Normal Saline</td>
+          <td>Drops/Spray</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>3 drops</td>
+          <td>4 drops</td>
+          <td>0.5mL</td>
+          <td>Intranasal</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Decongestion</td>
+          <td>Menthol+Eucalyptus</td>
+          <td>Drops/Spray</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>3 drops</td>
+          <td>4 drops</td>
+          <td>0.5mL</td>
+          <td>Intranasal</td>
+          <td>12-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td>Added to steaming water</td>
+        </tr>
+
+        <tr>
+          <td>Antihistamine</td>
+          <td>Chlorpheniramine</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="lora()">Calculate</button></td>
+          <td id="tad1"></td>
+          <td id="tad2"></td>
+          <td>16mg/day</td>
+          <td>PO</td>
+          <td>4-6 hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td>1mo - 23 months : 1mg every 12 hours; 2yr to 5yr: 1mg every 4-6 hours; 6 to 11 yr 2mg every 4-6 hours; 12 to 17 yr: 4mg every 4-6 hours</td>
+        </tr>
+
+        <tr>
+          <td>Antihistamine</td>
+          <td>Desloratadine</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="deslo()">Calculate</button></td>
+          <td id="hist1"></td>
+          <td id="hist2"></td>
+          <td>5mg/day</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>10</td>
+          <td>30</td>
+          <td>< 1 yr: No; 1-5 yr: 1.25 mg every 24 hours; 6yr to 11 yr: 2.5 mg every 24 hours;≥12yr 5mg once daily</td>
+        </tr>
+
+        <tr>
+          <td>Antihistamine</td>
+          <td>Cetrizine</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cetriz()">Calculate</button></td>
+          <td id="mine1"></td>
+          <td id="mine2"></td>
+          <td>10mg/day</td>
+          <td>PO</td>
+          <td>12-24-hourly</td>
+          <td>10</td>
+          <td>30</td>
+          <td>Age < 1 yr No; Age 12 months-23 months 2.5mg once daily; Age 2 - 5 years 5mg once daily; Age 6 -17 years: 10 mg once daily</td>
+        </tr>
+
+        <tr>
+          <td>Antihistamine</td>
+          <td>Ebastine</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="bastin()">Calculate</button></td>
+          <td id="bastin1"></td>
+          <td id="bastin2"></td>
+          <td>10mg/day</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>10</td>
+          <td>30</td>
+          <td><2yr No; 2-6yr 2.5mg once daily; 6-11yr 5mg once daily; ≥12yr 10mg once daily</td>
+        </tr>
+
+        <tr>
+          <td>Mast cell stabilizer</td>
+          <td>Montelukast</td>
+          <td>Montelukast</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>4mg</td>
+          <td>10mg</td>
+          <td>10mg/day</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>14</td>
+          <td>As needed</td>
+          <td>2-5yr 4mg; 5-14yr 5mg; >14yr 10mg</td>
+        </tr>
+
+        <tr>
+          <td>Steroid</td>
+          <td>Fluticasone Furoate</td>
+          <td>Fluticasone Furoate</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>25 microgram</td>
+          <td>50 microgram</td>
+          <td>50mcg</td>
+          <td>Intranasal</td>
+          <td>24-hourly</td>
+          <td>14</td>
+          <td>3 months</td>
+          <td>Use for over 4 year of age</td>
+        </tr>
+
+        <tr>
+          <td>Steroid</td>
+          <td>Budesonide</td>
+          <td>Budesonide</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>64 microgram</td>
+          <td>128 microgram</td>
+          <td>128 microgram</td>
+          <td>Intranasal</td>
+          <td>24-hourly</td>
+          <td>14</td>
+          <td>3 months</td>
+          <td>Up to 12 yr 64mcg; Above 12 years 128mcg</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">History of <strong>stuffy/runny nose, throat clearing, Atopy</strong></li>
+        <li class="disklist"><strong>Exacerbating factors</strong> e.g. cold, dust, </li>
+        <li class="disklist">Examination: <strong>rhinorrhea, hypertrophy of nasal turbinates, erythema of nasal mucosa</strong></li>
+        <li class="disklist">Management: <strong>saline drops, antihistamine, intra-nasal steroids</strong></li>
+        <li class="disklist"><strong>Follow up</strong> (referral or review)</li>
+      </ul>
+    </div>
+
+
+    <!--Acute Bacterial Sinusitis content-->
+    <div id="dBAc" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>CoAmoxiclav</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="acute()">Calculate</button></td>
+          <td id="acu1"></td>
+          <td id="acu2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td>Same dose for Chronic or Recurrent Sinusitis but with duration being twice as long</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Ceftriaxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="bact()">Calculate</button></td>
+          <td id="syp1"></td>
+          <td id="syp2"></td>
+          <td>2g</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td>Same dose for Chronic or Recurrent Sinusitis but with duration being twice as long</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefpodoxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="sinu()">Calculate</button></td>
+          <td id="act1"></td>
+          <td id="act2"></td>
+          <td>200mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td>Same dose for Chronic or Recurrent Sinusitis but with duration being twice as long</td>
+        </tr>
+
+        <tr>
+          <td>Pain/fever</td>
+          <td>Paracetamol</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ceta()">Calculate</button></td>
+          <td id="cet1"></td>
+          <td id="cet2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr> 
+
+        <tr>
+          <td>Pain/fever</td>
+          <td>Ibuprofen</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pain()">Calculate</button></td>
+          <td id="ref1"></td>
+          <td id="ref2"></td>
+          <td>400mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Aspiration Pneumonia content-->
+    <div id="dAsp" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Crystalline Penicillin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pneu()">Calculate</button></td>
+          <td id="pn1"></td>
+          <td id="pn2"></td>
+          <td>2MU</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Gentamicin and Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Gentamicin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="gent()">Calculate</button></td>
+          <td id="gn1"></td>
+          <td id="gn2"></td>
+          <td>240mg</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Crystalline Penicillin and Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Metronidazole</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="metro()">Calculate</button></td>
+          <td id="rot1"></td>
+          <td id="rot2"></td>
+          <td>400mg</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Gentamicin and Crystalline Penicillin</td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>CoAmoxiclav</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="firstC()">Calculate</button></td>
+          <td id="c1"></td>
+          <td id="c2"></td>
+          <td>1.2g</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>May give with Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>Penicillin Allergy</td>
+          <td>Erythromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="erythPA()">Calculate</button></td>
+          <td id="pa1"></td>
+          <td id="pa2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>Penicillin Allergy</td>
+          <td>Clarithromycin</td>
+          <td>Syrup/tab</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="clathPA()">Calculate</button></td>
+          <td id="ap1"></td>
+          <td id="ap2"></td>
+          <td>500mg</td>
+          <td>IV/PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Clindamycin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="secClind()">Calculate</button></td>
+          <td id="sec1"></td>
+          <td id="sec2"></td>
+          <td>1200mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>7</td>
+          <td>10</td><!-- check this value -->
+          <td>Give with Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>CoAmoxiclav</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="coaSec()">Calculate</button></td>
+          <td id="as1"></td>
+          <td id="as2"></td>
+          <td>1.2g</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Metronidazole</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefuroxime</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cefSec()">Calculate</button></td>
+          <td id="fec1"></td>
+          <td id="fec2"></td>
+          <td>750mg</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Give with Metronidazole</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>cough, fever and/or rapid breathing</strong> ascertained and documented</li>
+        <li class="disklist"><strong>Respiratory rate, SPO2 Oxygenation assessment/comment</strong></li>
+        <li class="disklist">Given <strong>appropriate antibiotics</strong>(in line with pneumonia classification)</li>
+        <li class="disklist">Supportive treatment given <strong>(oxygen as needed, antipyretics)</strong> as appropriate</li>
+        <li class="disklist">Documented <strong>Follow up</strong>  within <strong>48 hours</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Asthma content-->
+    <div id="dAst" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Beclomethasone</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>100microgram</td>
+          <td>400microgram</td>
+          <td>400microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Budesonide</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>100microgram</td>
+          <td>400microgram</td>
+          <td>400microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Ciclesonide</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>80microgram</td>
+          <td>320microgram</td>
+          <td>320microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Flunisolide</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>500microgram</td>
+          <td>1250microgram</td>
+          <td>1250microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Fluticasone Propionate</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>100microgram</td>
+          <td>500microgram</td>
+          <td>500microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Triamcinolone</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>400microgram</td>
+          <td>1200microgram</td>
+          <td>1200microgram</td>
+          <td>Inhalatation</td>
+          <td>12-24-hourly</td>
+          <td>30</td>
+          <td>As needed</td>
+          <td>Use with Spacer</td>
+        </tr>
+
+        <tr>
+          <td>Inhaled Corticosteroid</td>
+          <td>Salbutamol</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>200microgram</td>
+          <td>300microgram</td>
+          <td>400microgram</td>
+          <td>Inhalatation</td>
+          <td>Depending on response</td>
+          <td>7</td>
+          <td>As needed</td>
+          <td>Use with Spacer, repeat as desired</td>
+        </tr>
+
+        <tr>
+          <td>Systemic Corticosteroid</td>
+          <td>Prednisolone</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cort()">Calculate</button></td>
+          <td id="pred1"></td>
+          <td id="pred2"></td>
+          <td>60mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td>Maximum 40 mg in children under 12 years and 60mg for older ones</td>
+        </tr>
+        <tr>
+          <td>Beta-Blocker</td>
+          <td>Salbutamol</td>
+          <td>Evohaler</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="beta()">Calculate</button></td>
+          <td id="beta1">200microgram</td>
+          <td id="beta2">300microgram</td>
+          <td>2g</td>
+          <td>Inhalatation</td>
+          <td>Depending on response</td>
+          <td>7</td>
+          <td>As needed</td>
+          <td>Use with Spacer, repeat as desired</td>
+        </tr>
+
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History – classic asthma symptoms (any of recurrent or persistent <strong>cough, wheeze, DIB, tight chest)</strong>;  <strong>triggers</strong> (weather, nocturnal/diurnal pattern, exercise, inhaled triggers)</li>
+        <li class="disklist">Exam – <strong>SPO2, RR</strong> and interpretation. <strong>Chest auscultation</strong> done (wheeze, air entry vs silent chest).</li>
+        <li class="disklist">Classification – level of <strong>control (well controlled, partial control or uncontrolled), asthma exacerbation.</strong></li>
+        <li class="disklist">Management – <strong>Controller</strong> (<strong>ICS</strong> +/-  LTRA OR LABA) <strong>AND Reliever</strong> med (SABA)</li>
+        <li class="disklist"><strong>Follow-up booking at chest clinic.  (newly diagnosed cases and poorly controlled cases have written plan)</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Pneumocystis Pneumonia content-->
+    <div id="dMocy" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Treatment</td>
+          <td>Cotrimoxazole</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="moni()">Calculate</button></td>
+          <td id="mox1"></td>
+          <td id="mox2"></td>
+          <td>960mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>14</td>
+          <td>21</td>
+          <td>Use for 14 days (21 days in immunosuppresion)</td>
+        </tr>
+
+        <tr>
+          <td>Prophylaxis</td>
+          <td>Cotrimoxazole</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="zole()">Calculate</button></td>
+          <td id="zol1"></td>
+          <td id="zol2"></td>
+          <td>480mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td>Use for life</td>
+        </tr>
+
+        <tr>
+          <td>Antiinflammatory</td>
+          <td>Prednisolone</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="solone()">Calculate</button></td>
+          <td id="solo1"></td>
+          <td id="solo2"></td>
+          <td>60mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td>Use until respiratory distress settles, Maximum 40 mg</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>cough, fever and/or rapid breathing</strong> ascertained and documented</li>
+        <li class="disklist"><strong>Oxygenation assessment/comment</strong> and intervention done if appropriate</li>
+        <li class="disklist">Given <strong>appropriate antibiotics</strong></li>
+        <li class="disklist">Supportive treatment given <strong>(antipyretics, analgesics, fluids)</strong> as appropriate</li>
+        <li class="disklist">Documented <strong>Follow up</strong> within 1 week</li>
+      </ul>
+    </div>
+
+
+    <!--Tuberculosis content-->
+    <div id="dTub" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Antituberculosis</td>
+          <td>Isoniazid</td>
+          <td>Tablets/Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="iso()">Calculate</button></td>
+          <td id="zid1"></td>
+          <td id="zid2"></td>
+          <td>300mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>60</td>
+          <td>Use in fixed dose combination</td>
+        </tr>
+
+        <tr>
+          <td>Antituberculosis</td>
+          <td>Rifampicin</td>
+          <td>Tablets/Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="rif()">Calculate</button></td>
+          <td id="fam1"></td>
+          <td id="fam2"></td>
+          <td>600mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>60</td>
+          <td>Use in fixed dose combination</td>
+        </tr>
+
+        <tr>
+          <td>Antituberculosis</td>
+          <td>Pyrazinamide</td>
+          <td>Tablets/Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pyra()">Calculate</button></td>
+          <td id="zina1"></td>
+          <td id="zina2"></td>
+          <td>1.5g</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>180</td>
+          <td>Use in fixed dose combination</td>
+        </tr>
+
+        <tr>
+          <td>Antituberculosis</td>
+          <td>Ethambutol</td>
+          <td>Tablets/Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="etha()">Calculate</button></td>
+          <td id="eth1"></td>
+          <td id="eth2"></td>
+          <td>1.6g</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>180</td>
+          <td>Use in fixed dose combination</td>
+        </tr>
+
+        <tr>
+          <td>Antiinflammatory</td>
+          <td>Prednisolone</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="inflam()">Calculate</button></td>
+          <td id="lam1"></td>
+          <td id="lam2"></td>
+          <td>60mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>28</td>
+          <td>Antiinflammatory</td>
+        </tr>
+        <tr>
+          <td>Peripheral Neuropathy</td>
+          <td>Pyridoxine</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="neuro()">Calculate</button></td>
+          <td id="path1"></td>
+          <td id="path2"></td>
+          <td>50mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td>180</td>
+          <td>Use throughout isoniazid treatment</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Croup content-->
+    <div id="dCro" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Mild to moderate</td>
+          <td>Prednisolone</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mild()">Calculate</button></td>
+          <td id="ild1"></td>
+          <td id="ild2"></td>
+          <td>40mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>1</td>
+          <td>1</td>
+          <td>Give 2 doses 12 hours apart</td>
+        </tr>
+
+        <tr>
+          <td>Mild to moderate</td>
+          <td>Dexamethasone</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="dexa()">Calculate</button></td>
+          <td id="ex1"></td>
+          <td id="ex2"></td>
+          <td>10mg</td>
+          <td>PO/IV</td>
+          <td>Stat</td>
+          <td>1</td>
+          <td>1</td>
+          <td>Give single dose within 24 hours of onset</td>
+        </tr>
+
+        <tr>
+          <td>Severe</td>
+          <td>Adrenaline</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="adre()">Calculate</button></td>
+          <td id="dre1"></td>
+          <td id="dre2"></td>
+          <td>5mg</td>
+          <td>Nebulization</td>
+          <td>Stat</td>
+          <td>1</td>
+          <td>1</td>
+          <td>May repeat dose if detrioration after initial improvement</td>
+        </tr>
+
+        <tr>
+          <td>Severe</td>
+          <td>Dexamethasone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="xame()">Calculate</button></td>
+          <td id="dex1"></td>
+          <td id="dex2"></td>
+          <td>12mg</td>
+          <td>IM/IV</td>
+          <td>Stat</td>
+          <td>1</td>
+          <td>1</td>
+          <td></td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">history of harsh or barking <strong>cough, stridor or hoarse voice</strong></li>
+        <li class="disklist"><strong>Severity</strong> of croup with grading</li>
+        <li class="disklist">Presence or absence of <strong>drooling or toxic appearance</strong></li>
+        <li class="disklist">Rational use of <strong>steroids and adrenaline</strong></li>
+        <li class="disklist">Supportive treatment: <strong>antipyretics</strong></li>
+      </ul>
+    </div>
+
+    <!--Urinary Tract Infection-->
+    <div id="dUri" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Cerufoxime</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="uri()">Calculate</button></td>
+          <td id="ryn1"></td>
+          <td id="ryn2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Maximum 250mg per dose for age under 12 years</td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>CoAmoxiclav</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="tract()">Calculate</button></td>
+          <td id="tra1"></td>
+          <td id="tra2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Ceftriaxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="triSec()">Calculate</button></td>
+          <td id="trin1"></td>
+          <td id="trin2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Cefotaxime</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="triCef()">Calculate</button></td>
+          <td id="nefo1"></td>
+          <td id="nefo2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>8-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Gentamicin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="triGen()">Calculate</button></td>
+          <td id="gento1"></td>
+          <td id="gento2"></td>
+          <td>240mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Prevention</td>
+          <td>Cotrimoxazole</td>
+          <td>Syrup/tablet</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="triCot()">Calculate</button></td>
+          <td id="cotep1"></td>
+          <td id="cotep2"></td>
+          <td>240mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Prevention</td>
+          <td>Nitrofurantoin</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="triNit()">Calculate</button></td>
+          <td id="furan1"></td>
+          <td id="furan2"></td>
+          <td>100mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">Non-specific symptoms for the child less than 2 years old <strong>(fever, vomiting, irritability, failure to thrive)</strong></li>
+        <li class="disklist">Urinary symptom for the older child <strong>(dysuria, frequency, urgency, haematuria)</strong></li>
+        <li class="disklist">Abdominal exam <strong>(presence or absence of suprapubic tenderness, phimosis (males), costovertebral tenderness)</strong></li>
+        <li class="disklist"><strong>Urinalysis</strong> and culture requested</li>
+        <li class="disklist">Appropriate <strong>antibiotic</strong> Prescribed</li>
+        <li class="disklist"><strong>Follow</strong> up after treatment (repeat urine after treatment)</li>
+      </ul>
+    </div>
+
+
+    <!--Balanitis content-->
+    <div id="dBal" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Amoxicillin</td>
+          <td>Syrup/capsules</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="bal()">Calculate</button></td>
+          <td id="lab1"></td>
+          <td id="lab2"></td>
+          <td>500mg</td>
+          <td>PO</td>
+          <td>8-hourly</td>
+          <td>5</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Pain</td>
+          <td>Paracetamol</td>
+          <td>Syrup/tablets</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mole()">Calculate</button></td>
+          <td id="lome1"></td>
+          <td id="lome2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Status Epilepticus content-->
+    <div id="dEpi" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Neonate</td>
+          <td>Phenobarbitone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pheno()">Calculate</button></td>
+          <td id="neo1"></td>
+          <td id="neo2"></td>
+          <td>1000mg</td>
+          <td>IV Infusion</td>
+          <td>Over 20 minutes</td>
+          <td>1</td>
+          <td>1</td>
+          <td>Infuse at 1mg/Kg/min, once seizure controlled use 3-5mg/Kg every 24 hours</td>
+        </tr>
+
+        <tr>
+          <td>Infant and Child</td>
+          <td>Midazolam</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="midazo()">Calculate</button></td>
+          <td id="zola1"></td>
+          <td id="zola2"></td>
+          <td>10mg</td>
+          <td>Slow IV or IO</td>
+          <td>Over 3-5 minutes</td>
+          <td>1</td>
+          <td>1</td>
+          <td>May repeat once after 10 minutes</td>
+        </tr>
+
+        <tr>
+          <td>Infant and Child</td>
+          <td>Diazepam</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="diaze()">Calculate</button></td>
+          <td id="zepa1"></td>
+          <td id="zepa2"></td>
+          <td>10mg</td>
+          <td>Slow IV or IO</td>
+          <td>Over 3-5 minutes</td>
+          <td>1</td>
+          <td>1</td>
+          <td>May repeat once after 10 minutes</td>
+        </tr>
+
+        <tr>
+          <td>Infant and Child</td>
+          <td>Diazepam</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="diazes()">Calculate</button></td>
+          <td id="zepas1"></td>
+          <td id="zepas2"></td>
+          <td>10mg</td>
+          <td>Rectal</td>
+          <td>Every 15 minutes</td>
+          <td>1</td>
+          <td>1</td>
+          <td>Maximum 3 doses in 24 hours</td>
+        </tr>
+
+        <tr>
+          <td>Infant and Child</td>
+          <td>Lorazepam</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mapez()">Calculate</button></td>
+          <td id="pez1"></td>
+          <td id="pez2"></td>
+          <td>4mg</td>
+          <td>Slow IV or IO</td>
+          <td>Over 3-5 minutes</td>
+          <td>1</td>
+          <td>1</td>
+          <td>May repeat after 10 minutes and 20 minutes</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Phenytoin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pheny()">Calculate</button></td>
+          <td id="oin1"></td>
+          <td id="oin2"></td>
+          <td>1g</td>
+          <td>IV Infusion</td>
+          <td>Over 20 minutes</td>
+          <td>1</td>
+          <td>As needed</td>
+          <td>Maximum infusion rate 50mg/min</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Fosphenytoin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="fosph()">Calculate</button></td>
+          <td id="sofp1"></td>
+          <td id="sofp2"></td>
+          <td>10mg(PE)/kg/day</td>
+          <td>IV Infusion/IM</td>
+          <td>Over 20 minutes</td>
+          <td></td>
+          <td></td>
+          <td>Maximum infusion rate 150mg/min</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Sodium Valproate</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="valp()">Calculate</button></td>
+          <td id="na1"></td>
+          <td id="na2"></td>
+          <td>2.5g</td>
+          <td>IV Infusion</td>
+          <td>Over 5-10 minutes</td>
+          <td></td>
+          <td></td>
+          <td>May give additional 20mg IV</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Levetiracetam</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="lever()">Calculate</button></td>
+          <td id="race1"></td>
+          <td id="race2"></td>
+          <td>3g</td>
+          <td>IV Infusion</td>
+          <td>2-5mg/Kg/min</td> <!-- confirm value-->
+          <td></td>
+          <td></td>
+          <td>Infuse at 2-5mg/Kg/min</td>
+        </tr>
+
+        <tr>
+          <td>Infant trial</td>
+          <td>Pyridoxine</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="tri()">Calculate</button></td>
+          <td id="fan1"></td>
+          <td id="fan2"></td>
+          <td>1000mg</td>
+          <td> </td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Acute Bacterial Meningitis-->
+    <div id="dMen" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Ceftriaxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ngitis()">Calculate</button></td>
+          <td id="tis1"></td>
+          <td id="tis2"></td>
+          <td>2g</td>
+          <td>IV Infusion</td>
+          <td>24hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td>Dose may be divided into doses given 12-hourly</td>
+        </tr>
+
+        <tr>
+          <td>First line</td>
+          <td>Cefotaxime</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="fota()">Calculate</button></td>
+          <td id="fot1"></td>
+          <td id="fot2"></td>
+          <td></td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Insesitive to betalactams</td>
+          <td>Chloramphenicol</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="chloram()">Calculate</button></td>
+          <td id="col1"></td>
+          <td id="col2"></td>
+          <td>1g</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Lysteria in 1 - 2 months old</td>
+          <td>Ampicillin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="amp()">Calculate</button></td>
+          <td id="lys1"></td>
+          <td id="lys2"></td>
+          <td>1g</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td>Given with either Ceftriaxone or Cefotaxime</td>
+        </tr>
+
+        <tr>
+          <td>Antiinflammatory</td>
+          <td>Dexamethasone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="tory()">Calculate</button></td>
+          <td id="mam1"></td>
+          <td id="mam2"></td>
+          <td>10mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>2</td>
+          <td>2</td>
+          <td>Given first dose before starting antibiotics</td>
+        </tr>
+
+        <tr>
+          <td>Raised intracanial pressure</td>
+          <td>Frusemide</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cranial()">Calculate</button></td>
+          <td id="pre1"></td>
+          <td id="pre2"></td>
+          <td>80mg</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td>Monitor features in raised intracranial pressure</td>
+        </tr>
+
+        <tr>
+          <td>Raised intracanial pressure</td>
+          <td>Mannitol</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mann()">Calculate</button></td>
+          <td id="tol1"></td>
+          <td id="tol2"></td>
+          <td>28g</td>
+          <td>IV Infusion</td>
+          <td>24-hourly</td>
+          <td></td>
+          <td></td>
+          <td>Monitor features in raised intracranial pressure</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">History: At least two of:<strong>Fever, Reduced level of consciousness, Stiff neck, Bulging fontanelle, Convulsions, Vomiting</strong></li>
+        <li class="disklist">Examination:<strong>Fever, Coma or AVPU < V, inability to drink / feed, Stiff neck, Positive Kernig's sign, Bulging fontanelle</strong></li>
+        <li class="disklist">Plan of Care:<strong>Admit, Lumbar Puncture +/- Brain Imaging (MRI, CT), Haemogram,</strong> Urea, Electrolytes and Creatinine</li>
+        <li class="disklist">Management:<strong>Appropriate antibiotics</strong> [Ceftriaxone]</li>
+        <li class="disklist"><strong>Analgesic/Antipyretic</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Coma content-->
+    <div id="dCom" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Hypoglycemia</td>
+          <td>10% Dextrose</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="com()">Calculate</button></td>
+          <td id="amo1"></td>
+          <td id="amo2"></td>
+          <td>100ml</td>
+          <td>IV Infusion</td>
+          <td>Stat</td>
+          <td></td>
+          <td></td>
+          <td>Give 2-5mL/kg 10% Dextrose</td>
+        </tr>
+
+        <tr>
+          <td>Opioid Toxicity</td>
+          <td>Naloxone</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="nalo()">Calculate</button></td>
+          <td id="oxo1"></td>
+          <td id="oxo2"></td>
+          <td>2mg</td>
+          <td>IV</td>
+          <td>Stat</td>
+          <td></td>
+          <td></td>
+          <td>Can repeat as desired</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Rheumatic Fever content-->
+    <div id="dRheu" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Initial treatment</td>
+          <td>Phenoxymethyl Penicillin</td>
+          <td>Tablets</td>
+          <td class="none">7.5</td>
+          <td class="none">15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="rheu()">Calculate</button></td>
+          <td id="matic1"></td>
+          <td id="matic2"></td>
+          <td>2g</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td>Give for initial 10 days then reduce frequency to 12-hourly</td>
+        </tr>
+
+        <tr>
+          <td>Initial treatment</td>
+          <td>Erythromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none">10</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="revef()">Calculate</button></td>
+          <td id="fer1"></td>
+          <td id="fer2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>10</td>
+          <td>10</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Initial treatment</td>
+          <td>Benzathine Penicillin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>600000 units</td>
+          <td>1.2 MU</td>
+          <td>2.4 MU</td>
+          <td>IM</td>
+          <td>Stat</td>
+          <td>1</td>
+          <td>1</td>
+          <td><30kg 600000 Units; >= 30kg 1200000 Units</td>
+        </tr>
+
+        <tr>
+          <td>Secondary Prevention</td>
+          <td>Phenoxymethyl Penicillin</td>
+          <td>Tablets</td>
+          <td class="none">7.5</td>
+          <td class="none">15</td>
+          <td class="none">125mg</td>
+          <td><button type="button" onclick="preven()">Calculate</button></td>
+          <td id="dary1"></td>
+          <td id="dary2"></td>
+          <td>250mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td></td>
+          <td></td>
+          <td>Younger than 4 years 125mg; 4 years and older 250mg</td>
+        </tr>
+
+        <tr>
+          <td>Secondary Prevention</td>
+          <td>Erythromycin</td>
+          <td>Syrup/tablets</td>
+          <td class="none">10</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="secMycin()">Calculate</button></td>
+          <td id="even1"></td>
+          <td id="even2"></td>
+          <td>1g</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Secondary Prevention</td>
+          <td>Benzathine Penicillin</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button">Calculate</button></td>
+          <td>600000 units</td>
+          <td>1.2 MU</td>
+          <td>2.4 MU</td>
+          <td>IM</td>
+          <td>Every 3-4 weeks</td>
+          <td></td>
+          <td></td>
+          <td>Given until adulthood</td>
+        </tr>
+
+        <tr>
+          <td>Antiinflammatory</td>
+          <td>Aspirin high dose</td>
+          <td>Syrup/tablets</td>
+          <td class="none">100</td>
+          <td class="none">100</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="asp()">Calculate</button></td>
+          <td id="irin1"></td>
+          <td id="irin2"></td>
+          <td>600mg</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td>Give for initial 3-5 days then use lower dose</td>
+        </tr>
+
+        <tr>
+          <td>Antiinflammatory</td>
+          <td>Aspirin low dose</td>
+          <td>Syrup/tablets</td>
+          <td class="none">75</td>
+          <td class="none">75</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="aspl()">Calculate</button></td>
+          <td id="irinl1"></td>
+          <td id="irinl2"></td>
+          <td>600mg</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>28</td>
+          <td>30</td>
+          <td>Give low dose for 4 weeks</td>
+        </tr>
+
+        <tr>
+          <td>Carditis</td>
+          <td>Prednisolone</td>
+          <td>Syrup/tablets</td>
+          <td class="none">2</td>
+          <td class="none">2</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="card()">Calculate</button></td>
+          <td id="sitir1"></td>
+          <td id="sitir2"></td>
+          <td>60mg</td>
+          <td>PO</td>
+          <td>6-hourly</td>
+          <td>14</td>
+          <td>21</td>
+          <td>Taper after 5mg/24hr every 3 days after 2-3 weeks and Start Aspirin at 75mg/kg/24 hours at tapering</td>
+        </tr>
+
+        <tr>
+          <td>Chorea</td>
+          <td>Haloperidol</td>
+          <td>Tablets</td>
+          <td class="none">0.01</td>
+          <td class="none">0.03</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="chor()">Calculate</button></td>
+          <td id="are1"></td>
+          <td id="are2"></td>
+          <td>5mg</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>14</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Congestive Heart Failure content-->
+    <div id="dCon" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Preload Reduction</td>
+          <td>Frusemide</td>
+          <td>Syrup/tablets/injection</td>
+          <td class="none">1</td>
+          <td class="none">1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="fruse()">Calculate</button></td>
+          <td id="ruse1"></td>
+          <td id="ruse2"></td>
+          <td>40</td>
+          <td>PO/IV</td>
+          <td>6-24-hourly</td>
+          <td>As needed</td>
+          <td>As needed</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Preload Reduction</td>
+          <td>Hydrochlorthiazide</td>
+          <td>Tablets</td>
+          <td class="none">1</td>
+          <td class="none">1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="prel()">Calculate</button></td>
+          <td id="load1"></td>
+          <td id="load2"></td>
+          <td>15mg</td>
+          <td>PO</td>
+          <td>6-12-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Preload Reduction</td>
+          <td>Metolazone</td>
+          <td>Tablets</td>
+          <td class="none">0.1</td>
+          <td class="none">0.1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="reduc()">Calculate</button></td>
+          <td id="nole1"></td>
+          <td id="nole2"></td>
+          <td>10mg</td>
+          <td>PO</td>
+          <td>12-24-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Inotropic</td>
+          <td>Digoxin</td>
+          <td>Tablets</td>
+          <td class="none">0.025</td>
+          <td class="none">0.045</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="dig()">Calculate</button></td>
+          <td id="gixo1"></td>
+          <td id="gixo2"></td>
+          <td>1mg</td>
+          <td>PO</td>
+          <td>12-24-hourly</td>
+          <td>1</td>
+          <td>1</td>
+          <td>Recheck dose and consult Cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Inotropic</td>
+          <td>Dopamine</td>
+          <td>Injection</td>
+          <td class="none">5</td>
+          <td class="none">20</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="dop()">Calculate</button></td>
+          <td id="amine1"></td>
+          <td id="amine2"></td>
+          <td>50mcg/Kg/min</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Gradually titare to desired effect; consult Cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Inotropic</td>
+          <td>Dobutamine</td>
+          <td>Injection</td>
+          <td class="none">5</td>
+          <td class="none">20</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="dob()">Calculate</button></td>
+          <td id="uta1"></td>
+          <td id="uta2"></td>
+          <td>20mcg/Kg/min</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Gradually titare to desired effect; consult Cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Inotropic</td>
+          <td>Amrinone</td>
+          <td>Injection</td>
+          <td class="none">5</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="amri()">Calculate</button></td>
+          <td id="none1"></td>
+          <td id="none2"></td>
+          <td>10mcg/Kg/min</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Load with 1-3microgram/Kg IV over 3 minutes</td>
+        </tr>
+
+        <tr>
+          <td>Inotropic</td>
+          <td>Milrinone</td>
+          <td>Injection</td>
+          <td class="none">0.5</td>
+          <td class="none">1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="milri()">Calculate</button></td>
+          <td id="mil1"></td>
+          <td id="mil2"></td>
+          <td>1mcg/Kg/min</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Load with 50-75/Kg IV over 15 minutes</td>
+        </tr>
+
+        <tr>
+          <td>Afterload Reduction</td>
+          <td>Captopril</td>
+          <td>Tablets</td>
+          <td class="none">0.1</td>
+          <td class="none">0.5</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="capto()">Calculate</button></td>
+          <td id="top1"></td>
+          <td id="top2"></td>
+          <td>25mg</td>
+          <td>PO</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Consult cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Afterload Reduction</td>
+          <td>Enalapril</td>
+          <td>Tablets</td>
+          <td class="none">0.1</td>
+          <td class="none">0.5</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="enala()">Calculate</button></td>
+          <td id="lrp1"></td>
+          <td id="lrp2"></td>
+          <td>2.5-40mg</td>
+          <td>PO</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Consult cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Afterload Reduction</td>
+          <td>Lisinopril</td>
+          <td>Tablets</td>
+          <td class="none">0.1</td>
+          <td class="none">0.1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="lisin()">Calculate</button></td>
+          <td id="opr1"></td>
+          <td id="opr2"></td>
+          <td>40mg</td>
+          <td>PO</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Consult cardiologist</td>
+        </tr>
+
+        <tr>
+          <td>Afterload Reduction</td>
+          <td>Nitropusside</td>
+          <td>Injection</td>
+          <td class="none">0.5</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="nitro()">Calculate</button></td>
+          <td id="uss1"></td>
+          <td id="uss2"></td>
+          <td>10mcg/Kg/min</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>Microgram/Kg/min; monitor cyanide levels</td> <!-- confirm the value before mcg -->
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Hypertension content-->
+    <div id="dHyper" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Severe Hypertension</td>
+          <td>Hydralazine</td>
+          <td>Injection</td>
+          <td class="none">0.15</td>
+          <td class="none">0.15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="hydra()">Calculate</button></td>
+          <td id="ral1"></td>
+          <td id="ral2"></td>
+          <td>200mg/day</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>In normal Saline over 30 minutes, the 4-6mcg/Kg/min maximum 300mcg/min</td>
+        </tr>
+
+        <tr>
+          <td>Severe Hypertension</td>
+          <td>Labetalol</td>
+          <td>Injection</td>
+          <td class="none">0.2</td>
+          <td class="none">0.4</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="labeta()">Calculate</button></td>
+          <td id="hyper1"></td>
+          <td id="hyper2"></td>
+          <td>100mg</td>
+          <td>IV</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>0.2mg/Kg the 0.4mg/Kg slow push every 10 minutes up to 3-4mg/Kg maximum total 100mg</td>
+        </tr>
+
+        <tr>
+          <td>Hypertension</td>
+          <td>Captopril</td>
+          <td>Injection</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pril()">Calculate</button></td>
+          <td id="pot1"></td>
+          <td id="pot2"></td>
+          <td>50mg</td>
+          <td>IV</td>
+          <td>8-12-hourly</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Burns content-->
+    <div id="dbur" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Analgesic</td>
+          <td>Paracetamol</td>
+          <td>Syrup/Tablet</td>
+          <td class="none">10</td>
+          <td class="none">15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="burgesic()">Calculate</button></td>
+          <td id="gesic1"></td>
+          <td id="gesic2"></td>
+          <td>1000mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Analgesic</td>
+          <td>Morphine</td>
+          <td>Injection</td>
+          <td class="none">0.1</td>
+          <td class="none">0.2</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="burmorph()">Calculate</button></td>
+          <td id="morph1"></td>
+          <td id="morph2"></td>
+          <td>10mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td>Given by initial IV injection 50 micrograms/kg over at least 5 minutes then by continuous intravenous infusion 10–30 micrograms/Kg/hour adjusted according to response</td>
+        </tr>
+
+        <tr>
+          <td>Fluids</td>
+          <td>Normal saline</td>
+          <td>Injection</td>
+          <td class="none">3</td>
+          <td class="none">4</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="bursal()">Calculate</button></td>
+          <td id="burflu1"></td>
+          <td id="burflu2"></td>
+          <td>2000mL</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>2</td>
+          <td>3</td>
+          <td>0.9% Normal saline 3 - 4mL/Kg/1% BSA over 24 hours. Give the first half within first 8 hours. Remainder within the next 16 hours</td>
+        </tr>
+
+      </table>
+    </div>
+
+
+    <!--Aseptic Meningitis content-->
+    <div id="dasep" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Analgesic</td>
+          <td>Paracetamol</td>
+          <td>Syrup/Tablet</td>
+          <td class="none">10</td>
+          <td class="none">15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="menisa()">Calculate</button></td>
+          <td id="menis1"></td>
+          <td id="menis2"></td>
+          <td>1000mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Antiemetic</td>
+          <td>Dexamethasone</td>
+          <td>Injection</td>
+          <td class="none">0.25</td>
+          <td class="none">0.25</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="emetic()">Calculate</button></td>
+          <td id="emet1"></td>
+          <td id="emet2"></td>
+          <td>8mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Antiemetic</td>
+          <td>Ondansetron</td>
+          <td>Injection</td>
+          <td class="none">0.15</td>
+          <td class="none">0.2</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="ondan()">Calculate</button></td>
+          <td id="ndan1"></td>
+          <td id="ndan2"></td>
+          <td>4mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Antiviral</td>
+          <td>Acyclovir</td>
+          <td>Injection</td>
+          <td class="none">500</td>
+          <td class="none">500</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="acycle()">Calculate</button></td>
+          <td id="cyc1"></td>
+          <td id="cyc2"></td>
+          <td>500mg</td>
+          <td>IV</td>
+          <td>8-hourly</td>
+          <td>10</td>
+          <td>21</td>
+          <td>3months to 11 years: 500 mg/sqm. 8 hourly for 21 days; ≥ 12 years: 10 mg/kg/day 8 hourly for 14-21 days</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">History: At least two of:<strong>Fever, Reduced level of consciousness, Stiff neck, Bulging fontanelle, Convulsions, Vomiting</strong></li>
+        <li class="disklist">Examination:<strong>Fever, Coma or AVPU < V, inability to drink / feed, Stiff neck, Positive Kernig's sign, Bulging fontanelle</strong></li>
+        <li class="disklist">Plan of Care:<strong>Admit, Lumbar Puncture +/- Head CT Scan, Haemogram,</strong> Urea, Electrolytes and Creatinine</li>
+        <li class="disklist">Management:<strong>Appropriate antibiotics</strong> [Ceftriaxone]</li>
+        <li class="disklist"><strong>Analgesic/Antipyretic</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Measles content-->
+    <div id="dmeasl" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Vitamin A</td>
+          <td>Vitamin A</td>
+          <td>Capsule</td>
+          <td class="none">use age</td>
+          <td class="none">use age</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="menavit()">Calculate</button></td>
+          <td id="meavit1">use age</td><!--min dosage function-->
+          <td id="meavit2">use age</td><!--min dosage function-->
+          <td>200 000IU</td>
+          <td>PO</td>
+          <td>Stat</td>
+          <td>2</td>
+          <td>7</td>
+          <td>Give stat, then day 2, then day 14. Age <6mo 50 000IU, 6-11mo 100 000IU, Age ≥12mo 200 000IU</td>
+        </tr>
+
+        <tr>
+          <td>Antipyretic</td>
+          <td>Paracetamol</td>
+          <td>Syrup/Tablet</td>
+          <td class="none">10</td>
+          <td class="none">15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="pyret()">Calculate</button></td>
+          <td id="pyret1"></td>
+          <td id="pyret2"></td>
+          <td>1000mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Post Exposure</td>
+          <td>IV Immune Globulin</td>
+          <td>Injection</td>
+          <td class="none">0.25</td>
+          <td class="none">0.5</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="globul()">Calculate</button></td>
+          <td id="globul1"></td>
+          <td id="globul2"></td>
+          <td>15mL</td>
+          <td>IM</td>
+          <td>Stat</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Mumps content-->
+    <div id="dmump" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Pain/Fever</td>
+          <td>Paracetamol</td>
+          <td>Syrup/tablets</td>
+          <td class="none">10</td>
+          <td class="none">15</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mumps()">Calculate</button></td>
+          <td id="mumps1"></td>
+          <td id="mumps2"></td>
+          <td>1000mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Pain/Fever</td>
+          <td>Ibuprofen</td>
+          <td>Syrup/tablets</td>
+          <td class="none">4</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="mumibu()">Calculate</button></td>
+          <td id="mumibu1"></td>
+          <td id="mumibu2"></td>
+          <td>400mg</td>
+          <td>PO</td>
+          <td>6-8-hourly</td>
+          <td>3</td>
+          <td>5</td>
+          <td></td>
+        </tr>
+
+      </table>
+    </div>
+
+
+    <!--Candidiasis Mucosal content-->
+    <div id="dcandid" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Nystatin</td>
+          <td>Suspension</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="nyst()">Calculate</button></td><!--nyst function-->
+          <td id="nyst1">100 000IU</td><!--min dosage function-->
+          <td id="nyst2">200 000IU</td><!--max dosage function-->
+          <td>200 000IU</td>
+          <td>PO</td>
+          <td>4-6-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>Treat mother concurrently with topical Nystatin on nipples and areola</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Fluconazole</td>
+          <td>Syrup/Capsules</td>
+          <td class="none">3</td>
+          <td class="none">6</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="candflu()">Calculate</button></td>
+          <td id="candfl1"></td>
+          <td id="candfl2"></td>
+          <td>100mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>10</td>
+          <td>6 mg/Kg stat then 3 mg/Kg/day as a single dose for 7-14 days (neonates <14 days 72 hourly; < 14 days 48 hourly)</td>
+        </tr>
+
+        <tr>
+          <td>Vaginal</td>
+          <td>See Notes</td>
+          <td>Cream/Ointment</td>
+          <td class="none">3</td>
+          <td class="none">6</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="candvag()">Calculate</button></td>
+          <td id="candvag1">Apply on Affected area</td><!--vaginal ids and function-->
+          <td id="candvag2">Apply on Affected area</td>
+          <td></td>
+          <td>Topical</td>
+          <td>12-hourly</td>
+          <td>3</td>
+          <td>7</td>
+          <td>clotrimazole, miconazole, triazoles, or nystatin suppositories or creams, applied once nightly for 3-7 days. Avoid in prepubertal girls</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Candidiasis cutaneous content-->
+    <div id="dcutan" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Clotrimazole</td>
+          <td>Cream/Ointment</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cunat()">Calculate</button></td><!--nyst function-->
+          <td id="cunat1">Apply on Affected area</td><!--min dosage function-->
+          <td id="cunat2">Apply on Affected area</td><!--max dosage function-->
+          <td></td>
+          <td>Topical</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>14</td>
+          <td>Apply on affected areas</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Miconazole</td>
+          <td>Cream/Ointment</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cunat()">Calculate</button></td><!--nyst function-->
+          <td id="cunat1">Apply on Affected area</td><!--min dosage function-->
+          <td id="cunat2">Apply on Affected area</td><!--max dosage function-->
+          <td></td>
+          <td>Topical</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>14</td>
+          <td>Apply on affected areas</td>
+        </tr>
+
+        <tr>
+          <td>Inflammation</td>
+          <td>Hydrocortisone</td>
+          <td>Cream/Ointment</td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td class="none"></td>
+          <td><button type="button" onclick="cunat()">Calculate</button></td><!--nyst function-->
+          <td id="cunat1">Apply on Affected area</td><!--min dosage function-->
+          <td id="cunat2">Apply on Affected area</td><!--max dosage function-->
+          <td></td>
+          <td>Topical</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>14</td>
+          <td>Apply on affected areas</td>
+        </tr>
+      </table>
+    </div>
+
+    <!--Candidiasis Systemic content-->
+    <div id="dsystem" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Fluconazole</td>
+          <td>Injection</td>
+          <td class="none">3</td>
+          <td class="none">6</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="casys()">Calculate</button></td>
+          <td id="casys1"></td>
+          <td id="casys2"></td>
+          <td>100mg</td>
+          <td>IV</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>14</td>
+          <td>Loading dose 12 mg/Kg followed by 6 mg/Kg IV daily (neonates <14 days 72hourly < 14 days 48 hourly) for 7-14 days or continue according to response</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Voriconazole</td>
+          <td>Injection</td>
+          <td class="none">3</td>
+          <td class="none">6</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="voric()">Calculate</button></td><!--vori function-->
+          <td id="voric1">See remarks</td>
+          <td id="voric2">See remarks</td>
+          <td>200mg</td>
+          <td>IV</td>
+          <td>12-hourly</td>
+          <td>7</td>
+          <td>14</td>
+          <td>2-14 years <50kg: 9 mg/kg/dose for 2 doses 12 hourly then 8 mg/kg 12 hourly; 14 years and above < 50kg: 6 mg/kg 12 hourly for 2 doses then 4 mg/kg 12 hourly IV for 7-14 days</td>
+        </tr>
+      </table>
+    </div>
+
+
+    <!--Cryptococcal Meningitis content-->
+    <div id="dcrypto" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>Induction</td>
+          <td>Amphotericin B deoxycholate</td>
+          <td>Injection</td>
+          <td class="none">1</td>
+          <td class="none">1</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="amphot()">Calculate</button></td>
+          <td id="amphot1"></td>
+          <td id="amphot2"></td>
+          <td>50mg</td>
+          <td>IV</td>
+          <td>6-hourly</td>
+          <td>14</td>
+          <td>14</td>
+          <td>Give with Flucytosine 100mg/Kg Orally every 6 hours</td>
+        </tr>
+
+        <tr>
+          <td>Induction</td>
+          <td>Liposomal Amphotericin B</td>
+          <td>Injection</td>
+          <td class="none">5</td>
+          <td class="none">5</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="liposoma()">Calculate</button></td>
+          <td id="liposoma1"></td>
+          <td id="liposoma2"></td>
+          <td>250mg</td>
+          <td>IV</td>
+          <td></td>
+          <td>14</td>
+          <td>14</td>
+          <td>Give with Flucytosine 100mg/Kg Orally every 6 hours</td>
+        </tr>
+
+        <tr>
+          <td>Consolidation</td>
+          <td>Fluconazole</td>
+          <td>Injection</td>
+          <td class="none">10</td>
+          <td class="none">12</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="consoinjec()">Calculate</button></td>
+          <td id="consoinjec1"></td>
+          <td id="consoinjec2"></td>
+          <td>800mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>56</td>
+          <td>56</td>
+          <td>Give for 8 weeks</td>
+        </tr>
+
+        <tr>
+          <td>Maintenance </td>
+          <td>Fluconazole</td>
+          <td>Injection</td>
+          <td class="none">6</td>
+          <td class="none">6</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="flucomain()">Calculate</button></td>
+          <td id="flucomain1"></td>
+          <td id="flucomain2"></td>
+          <td>400mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>365</td>
+          <td>365</td>
+          <td>Give for 1 year</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+
+      <ul>
+        <li class="disklist">History: At least two of:<strong>Fever, Reduced level of consciousness, Stiff neck, Bulging fontanelle, Convulsions, Vomiting</strong></li>
+        <li class="disklist">Examination:<strong>Fever, Coma or AVPU < V, inability to drink / feed, Stiff neck, Positive Kernig's sign, Bulging fontanelle</strong></li>
+        <li class="disklist">Plan of Care:<strong>Admit, Lumbar Puncture +/- Head CT Scan, Haemogram,</strong> Urea, Electrolytes and Creatinine</li>
+        <li class="disklist">Management:<strong>Appropriate antibiotics</strong> [Ceftriaxone]</li>
+        <li class="disklist"><strong>Analgesic/Antipyretic</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Non Severe Malaria content-->
+    <div id="darte" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Artemether + Lumefantrine</td>
+          <td>Tablets</td>
+          <td class="none">Use Age Bands</td>
+          <td class="none">Use Age Bands</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="sevemal()">Calculate</button></td>
+          <td id="sevemal1">Use Age Bands</td>
+          <td id="sevemal2">Use Age Bands</td>
+          <td>4 Tablets</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>3</td>
+          <td>3</td>
+          <td>Artemether 20mg + Lumefantrine 120mg:  Weight <4.9Kg Not recommended; 5-14.9Kg 1 tab; 15-24.9Kg 2 Tabs; 25-34.9Kg 3 Tabs; >34.9Kg 4 Tabs</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Artesunate</td>
+          <td>Injection</td>
+          <td class="none">2.4</td>
+          <td class="none">3</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="artesun()">Calculate</button></td>
+          <td id="artesun1"></td>
+          <td id="artesun2"></td>
+          <td>180mg</td>
+          <td>IV</td>
+          <td>12-hourly</td>
+          <td>1</td>
+          <td>7</td>
+          <td>Give stat, then after 12 and 24 hours; and continue once daily until oral administration is feasible</td>
+        </tr>
+
+        <tr>
+          <td>Prophylaxis</td>
+          <td>Atovaquone+Proguanil</td>
+          <td>Tablets</td>
+          <td class="none">Use Age Bands</td>
+          <td class="none">Use Age Bands</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="malproph()">Calculate</button></td>
+          <td id="malproph1">Use Age Bands</td>
+          <td id="malproph2">Use Age Bands</td>
+          <td>4 Tablets</td>
+          <td>PO</td>
+          <td>12-hourly</td>
+          <td>3</td>
+          <td>3</td>
+          <td>Paediatric Tablets - Atovaquone 62.5mg+Proguanil 25mg: Weight <10.9Kg Not recommended; 11-20.9Kg 1 tab; 21-30.9Kg 2 Tabs; 31-40.9Kg 3 Tabs; >40.9Kg 4 Tabs</td>
+        </tr>
+
+        <tr>
+          <td>Prophylaxis</td>
+          <td>Proguanil</td>
+          <td>Tablets</td>
+          <td class="none">3</td>
+          <td class="none">3</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="malprophy()">Calculate</button></td>
+          <td id="malprophy1"></td>
+          <td id="malprophy2"></td>
+          <td>200mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>7</td>
+          <td>See notes</td>
+          <td>Each Tablets is 100mg; Give 3 mg/Kg daily; from two days before travel, until 4 weeks after departure from endemic area</td>
+        </tr>
+
+        <tr>
+          <td>Prophylaxis</td>
+          <td>Mefloquin</td>
+          <td>Tablets</td>
+          <td class="none">5</td>
+          <td class="none">5</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="melfo()">Calculate</button></td>
+          <td id="melfo1"></td>
+          <td id="melfo2"></td>
+          <td>250mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>21</td>
+          <td>See notes</td>
+          <td>Each Tablets is 250mg; Give 5 mg/Kg daily; from two weeks before travel, until 4 weeks after departure from endemic area</td>
+        </tr>
+
+        <tr>
+          <td>Prophylaxis</td>
+          <td>Doxycycline</td>
+          <td>Tablets/Capsules</td>
+          <td class="none">2</td>
+          <td class="none">2</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="doxyc()">Calculate</button></td>
+          <td id="doxyc1"></td>
+          <td id="doxyc2"></td>
+          <td>100mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>21</td>
+          <td>120</td>
+          <td>Each Tablet/Capsule is 100mg; Give 2 mg/Kg daily; from two weeks before travel, until 4 weeks after departure from endemic area</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>fever</strong> </li>
+        <li class="disklist">History <strong>Travel</strong> to malaria endemic area documented</li>
+        <li class="disklist">Severity of disease with its <strong>criteria and complications documented</strong></li>
+        <li class="disklist">Appropriate Treatment Given <strong>(AL for Non severe, Artesunate for Severe)**</strong></li>
+        <li class="disklist">Supportive treatment prescribed <strong>(Antibiotic in severe Malaria, Antipyretics)</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Sever Malaria content-->
+    <div id="dmala" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+        <tr>
+          <td>First line</td>
+          <td>Artesunate</td>
+          <td>Injection</td>
+          <td class="none">2.4</td>
+          <td class="none">3</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="malarte()">Calculate</button></td>
+          <td id="malarte1"></td>
+          <td id="malarte2"></td>
+          <td>180mg</td>
+          <td>IV</td>
+          <td>12-hourly</td>
+          <td>1</td>
+          <td>7</td>
+          <td>Give stat, then after 12 and 24 hours; and continue once daily until oral administration is feasible</td>
+        </tr>
+
+        <tr>
+          <td>First line Alternative</td>
+          <td>Quinine</td>
+          <td>Injection</td>
+          <td class="none">10</td>
+          <td class="none">20</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="quiarte()">Calculate</button></td>
+          <td id="quiarte1"></td>
+          <td id="quiarte2"></td>
+          <td>600mg</td>
+          <td>IV infusion</td>
+          <td>8-hourly</td>
+          <td>1</td>
+          <td>7</td>
+          <td>Give 20 mg/Kg IV infusion in 5% dextrose to run over 4 hours, then 10 mg/Kg every 8 hours at a rate not exceeding 5 mg/Kg/hr</td>
+        </tr>
+
+        <tr>
+          <td>No Artesunate</td>
+          <td>Artemether</td>
+          <td>Injection</td>
+          <td class="none">1.6</td>
+          <td class="none">3.2</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="noarte()">Calculate</button></td>
+          <td id="noarte1"></td>
+          <td id="noarte2"></td>
+          <td>200mg</td>
+          <td>IM</td>
+          <td>24-hourly</td>
+          <td>1</td>
+          <td>7</td>
+          <td>Give 3.2 mg/Kg IM stat; then 1.6 mg/Kg IM daily</td>
+        </tr>
+
+        <tr>
+          <td>Second line</td>
+          <td>Quinine</td>
+          <td>Injection</td>
+          <td class="none">10</td>
+          <td class="none">20</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="quinjec()">Calculate</button></td>
+          <td id="quinjec1"></td>
+          <td id="quinjec2"></td>
+          <td>600mg</td>
+          <td>IV infusion</td>
+          <td>8-hourly</td>
+          <td>1</td>
+          <td>7</td>
+          <td>Give 20 mg/Kg IV infusion in 5% dextrose to run over 4 hours, then 10 mg/Kg every 8 hours at a rate not exceeding 5 mg/Kg/hr</td>
+        </tr>
+
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>fever</strong> </li>
+        <li class="disklist">History <strong>Travel</strong> to malaria endemic area documented</li>
+        <li class="disklist">Severity of disease with its <strong>criteria and complications documented</strong></li>
+        <li class="disklist">Appropriate Treatment Given <strong>(AL for Non severe, Artesunate for Severe)**</strong></li>
+        <li class="disklist">Supportive treatment prescribed <strong>(Antibiotic in severe Malaria, Antipyretics)</strong></li>
+      </ul>
+    </div>
+
+
+    <!--Acute Gastroenteritis content-->
+    <div id="dgastro" class="none scrollbar">
+      <table style="width:100%;">
+        <caption class="center"><b>GERTRUDE'S STANDARD TREATMENT GUIDELINES 5TH EDITION MEDICATION DOSES</b></caption>
+        <tr>
+          <th>Level line</th>
+          <th>Medication type</th>
+          <th>Prepation type</th>
+          <th class="none">Minimum dose per kg</th>
+          <th class="none">Maximum dose per kg</th>
+          <th class="none">Absolute minimum</th>
+          <th>Calculations</th>
+          <th>Minimum Dose to be given</th>
+          <th>Maximum Dose to be given</th>
+          <th>Absolute maximum</th>
+          <th>Route</th>
+          <th>Frequency</th>
+          <th>Minimum duration in days</th>
+          <th>Maximum duration in days</th>
+          <th>Remarks</th>
+        </tr>
+
+        <tr>
+          <td>Severe Dehydration</td>
+          <td>Normal Saline</td>
+          <td>Injection</td>
+          <td class="none">30</td>
+          <td class="none">70</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="gasenter()">Calculate</button></td>
+          <td id="gasenter1"></td>
+          <td id="gasenter2"></td>
+          <td>2000mL</td>
+          <td>IV</td>
+          <td>Over 3-6hours</td>
+          <td>3hours</td>
+          <td>6hours</td>
+          <td>Give 100mL/Kg as 30mg/Kg over 30 minutes and 70mL/Kg over 150 minutes for children aged 1 year and above and double the time for infants (age under 1 year)</td>
+        </tr>
+
+        <tr>
+          <td>Some Dehydration</td>
+          <td>Oral Rehydration Solution</td>
+          <td>Suspension</td>
+          <td class="none">75</td>
+          <td class="none">75</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="rehyd()">Calculate</button></td>
+          <td id="rehyd1"></td>
+          <td id="rehyd2"></td>
+          <td>1500mL</td>
+          <td>PO</td>
+          <td>Over 4hours</td>
+          <td>4hours</td>
+          <td>4hours</td>
+          <td>Give 75mL/Kg over 4 hours and monitor retention</td>
+        </tr>
+
+        <tr>
+          <td>Ongoing losses</td>
+          <td>Oral Rehydration Solution</td>
+          <td>Suspension</td>
+          <td class="none">5</td>
+          <td class="none">10</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="goinloss()">Calculate</button></td>
+          <td id="goinloss1"></td>
+          <td id="goinloss2"></td>
+          <td>500mL</td>
+          <td>PO</td>
+          <td>Over 30minutes</td>
+          <td>Over 10minutes</td>
+          <td>Over 30minutes</td>
+          <td>Give 5-10mL per motion</td>
+        </tr>
+
+        <tr>
+          <td>Zinc Replacement</td>
+          <td>Zinc Sulphate</td>
+          <td>Tablets/Syrup</td>
+          <td class="none">Use age/weight bands</td>
+          <td class="none">Use age/weight bands</td>
+          <td class="none"></td>
+          <td><button type="button" onclick="sulph()">Calculate</button></td>
+          <td id="sulph1">10mg</td>
+          <td id="sulph2">20mg</td>
+          <td>20mg</td>
+          <td>PO</td>
+          <td>24-hourly</td>
+          <td>10</td>
+          <td>14</td>
+          <td><6 months or < weighing 10Kg – 10mg/day; ≥6 months or weighing ≥10Kg 20mg/day</td>
+        </tr>
+      </table>
+
+      <h2 class="center size">Reliability of Core Measures</h2>
+      <ul>
+        <li class="disklist">History of <strong>diarrhoea and/or vomiting</strong>  documented</li>
+        <li class="disklist">Presence or absence of <strong>fever or other systemic symptoms</strong> documented</li>
+        <li class="disklist"><strong>Degree of dehydration</strong> documented with associated criteria if dehydrated</li>
+        <li class="disklist">Rational use of Fluids - <strong>ORS and/or IV Fluids</strong></li>
+        <li class="disklist">Use of <strong>Zinc Sulphate</strong> documented if diarrhea present</li>
+      </ul>
+    </div>
+
+    <br/><br/>
+
+    <footer>
+     <p class="center">&copy; 2022 Gertrude's Children's Hospital<p>
+    </footer>
+
+  </body>
+</html> 
+
+
+
+
+
+
+
+

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf=8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="Goro Collins"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<title>Emergency Medications Calculator</title>
+	<link rel="stylesheet" href="med.css">
+	<script type="text/javascript" src="medFunction.js"></script>
+</head>
+<body>
+	<img src="Gertrudes-Childrens-Hospital-Logo.jpg" alt="Gertrudes Childrens Hospital Logo">
+	<h1 class="center">Emergency Medications Calculator</h1>
+  <p class="center">This calculator assists you to get correct medication dosage</p>
+  <div>
+     <form name="patient's data">
+        <fieldset>
+          <Legend style="font-size:20px;" class="center">Patient parameters:</Legend>
+         Weight(kg):
+         <input type="number" id="Eweight" name="weight" min="0" step="0.01" placeholder="Enter weight of patient" class="left"><br><br/>
+         Height(cm):
+         <input type="number" id="Eheight" name="Eheight" min="0" step="0.01" placeholder="Enter height of patient" class="left"><br/><br/>
+        </fieldset>
+     </form><br/><br/>
+     <form name="emergency" id="selector">
+       <label for="slct">Pick a medication:</label>
+       <select id="slct" name="slct" onchange="EPicker()">
+        <option value="select">Select</option>
+        <option value="1">Bolus medicines</option>
+        <option value="2">Anticonvulsant and CNS</option>
+        <option value="3">Infusions</option>
+        <option value="4">Muscle relaxation and intubation drugs</option>
+        <option value="5">Antimicrobials</option>
+        <option value="6">Other Medications</option>
+       </select>
+      </form><br/>
+     <p id="birth" class="none center"></p>
+    </div>
+    <p id="para" class="none center"><b>Please select a valid medication</b></p>
+
+    <!-- Bolus content -->
+<div id="Mbolus" class="none scrollbar center">
+    <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Adrenaline 1:10 000 IV</td>
+          <td><button type="button" onclick="adre()">Calculate</button></td>
+          <td id="adre1"></td>
+          <td>0.1mL/Kg</td>
+        </tr>
+        <tr>
+          <td>Adenosine</td>
+          <td><button type="button" onclick="Adeno()">Calculate</button></td>
+          <td id="Adeno1"></td>
+          <td>100mcg/Kg, MAX 500 mcg/Kg</td>
+        </tr>
+        <tr>
+          <td>Atropine (600MCG/mL) IV</td>
+          <td><button type="button" onclick="Atro()">Calculate</button></td>
+          <td id="Atro1"></td>
+          <td>20mcg/Kg</td>
+        </tr>
+        <tr>
+          <td>Sodium Bicarbonate 8.4%</td>
+          <td><button type="button" onclick="na()">Calculate</button></td>
+          <td id="na1"></td>
+          <td>1mL/Kg</td>
+        </tr>
+        <tr>
+          <td>Calcium Gluconate 10% IV</td>
+          <td><button type="button" onclick="ca()">Calculate</button></td>
+          <td id="ca1"></td>
+          <td>0.5mL/Kg</td>
+        </tr>
+        <tr>
+          <td>Magnesium Sulphate</td>
+          <td><button type="button" onclick="mg()">Calculate</button></td>
+          <td id="mg1"></td>
+          <td>40mg/Kg over 20 min Max 2G</td>
+        </tr>
+        <tr>
+          <td>Defibrillation (Synchronized)</td>
+          <td><button type="button" onclick="sync()">Calculate</button></td>
+          <td id="sync1"></td>
+          <td>1 J/Kg</td>
+        </tr>
+        <tr>
+          <td>Defibrillation (Asynchronized)</td>
+          <td><button type="button" onclick="async()">Calculate</button></td>
+          <td id="async1"></td>
+          <td>4 J/Kg</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Anticonvulsant and CNS drugs content -->
+<div id="Manticon" class="none scrollbar center">
+    <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Lorazepam IV</td>
+          <td><button type="button" onclick="raze()">Calculate</button></td>
+          <td id="raze1"></td>
+          <td>0.1 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Midazolam IV</td>
+          <td><button type="button" onclick="zolam()">Calculate</button></td>
+          <td id="zolam1"></td>
+          <td>0.1 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Phenytoin IV</td>
+          <td><button type="button" onclick="iv()">Calculate</button></td>
+          <td id="iv1"></td>
+          <td>20 mg/Kg loading dose</td>
+        </tr>
+        <tr>
+          <td>Phenytoin IV</td>
+          <td><button type="button" onclick="iv2()">Calculate</button></td>
+          <td id="iv21"></td>
+          <td>Maintenance dose Q24 hours (5mg/Kg)</td>
+        </tr>
+        <tr>
+          <td>Phenobarbitone IV</td>
+          <td><button type="button" onclick="barb()">Calculate</button></td>
+          <td id="barb1"></td>
+          <td>20 mg/Kg loading dose</td>
+        </tr>
+        <tr>
+          <td>Phenobarbitone IV</td>
+          <td><button type="button" onclick="barb2()">Calculate</button></td>
+          <td id="barb21"></td>
+          <td>Maintenance dose Q24 hours (5mg/Kg)</td>
+        </tr>
+        <tr>
+          <td>Paraldehyde PR</td>
+          <td><button type="button" onclick="pr()">Calculate</button></td>
+          <td id="pr1"></td>
+          <td>0.4 mL/Kg. Use equal volume of oil</td>
+        </tr>
+        <tr>
+          <td>10% Mannitol IV</td>
+          <td><button type="button" onclick="toliv()">Calculate</button></td>
+          <td id="toliv1"></td>
+          <td>0.5 grammes/Kg</td>
+        </tr>
+        <tr>
+          <td>3% Saline IV</td>
+          <td><button type="button" onclick="saliv()">Calculate</button></td>
+          <td id="saliv1"></td>
+          <td>3 mL/Kg</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Infusions (Sedation, Inotropes and Useful Agents) -->
+<div id="Minfu" class="none scrollbar center">
+    <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Morphine IV Infusion</td>
+          <td><button type="button" onclick="ion()">Calculate</button></td>
+          <td id="ion1"></td>
+          <td>in 50mL NS, 1mL/hr = 20mcg/Kg/hr</td>
+        </tr>
+        <tr>
+          <td>Morphine IV Bolus</td>
+          <td><button type="button" onclick="bus()">Calculate</button></td>
+          <td id="bus1"></td>
+          <td>0.1mg/Kg Stat or bolus dose</td>
+        </tr>
+        <tr>
+          <td>Midazolam IV</td>
+          <td><button type="button" onclick="miv()">Calculate</button></td>
+          <td id="miv1"></td>
+          <td>in 50mL NS, 1mL/hr = 1mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Midazolam IV Bolus</td>
+          <td><button type="button" onclick="lamiv()">Calculate</button></td>
+          <td id="lamiv1"></td>
+          <td>0.1mg/Kg Stat or bolus dose</td>
+        </tr>
+        <tr>
+          <td>Dopamine (peripheral) IV</td>
+          <td><button type="button" onclick="piv()">Calculate</button></td>
+          <td id="piv1"></td>
+          <td>in 50mL NS, 1mL/hr = 1mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Dopamine (central) IV</td>
+          <td><button type="button" onclick="niv()">Calculate</button></td>
+          <td id="niv1"></td>
+          <td>in 50mL NS, 1mL/hr = 10mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Adrenaline (central) IV</td>
+          <td><button type="button" onclick="riv()">Calculate</button></td>
+          <td id="riv1"></td>
+          <td>in 50mL NS, 1mL/hr = 0.1mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Noradrenaline (central) IV</td>
+          <td><button type="button" onclick="tiv()">Calculate</button></td>
+          <td id="tiv1"></td>
+          <td>in 50mL NS, 1mL/hr = 0.1mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Noradrenaline (peripheral) IV</td>
+          <td><button type="button" onclick="reliv()">Calculate</button></td>
+          <td id="reliv1"></td>
+          <td>in 50mL NS, 1mL/hr = 0.05mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Milrinone IV</td>
+          <td><button type="button" onclick="miliv()">Calculate</button></td>
+          <td id="miliv1"></td>
+          <td>in 50mL NS, 1mL/hr = 0.5mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Prostin</td>
+          <td><button type="button" onclick="stin()">Calculate</button></td>
+          <td id="stin1"></td>
+          <td>in 50mL NS, 1mL/hr = 10 NANOgm/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Insulin infusion</td>
+          <td><button type="button" onclick="fusi()">Calculate</button></td>
+          <td id="fusi1"></td>
+          <td>In 50mL NS, 1mL/hr = 0.1U/Kg/hr</td>
+        </tr>
+        <tr>
+          <td>Insulin IV Bolus for Hyperkalemia</td>
+          <td><button type="button" onclick="lemia()">Calculate</button></td>
+          <td id="lemia1"></td>
+          <td>0.2U/Kg with Glucose 1G/Kg</td>
+        </tr>
+        <tr>
+          <td>Salbutamol IV</td>
+          <td><button type="button" onclick="tamoliv()">Calculate</button></td>
+          <td id="tamoliv1"></td>
+          <td>in 50mL NS, 1mL/hr = 0.5mcg/Kg/min</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Muscle relaxation and intubation drugs -->
+<div id="Mrelax" class="none scrollbar center">
+      <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Suxamethonium IV</td>
+          <td><button type="button" onclick="meth()">Calculate</button></td>
+          <td id="meth1"></td>
+          <td>2 mg/Kg if <10Kg else 1mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Rocuronium IV</td>
+          <td><button type="button" onclick="curo()">Calculate</button></td>
+          <td id="curo1"></td>
+          <td>1mg/Kg for rapid intubation</td>
+        </tr>
+        <tr>
+          <td>Pancuronium IV</td>
+          <td><button type="button" onclick="panc()">Calculate</button></td>
+          <td id="panc1"></td>
+          <td>0.1 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Fentanyl IV</td>
+          <td><button type="button" onclick="fiv()">Calculate</button></td>
+          <td id="fiv1"></td>
+          <td>2 mcg/Kg. Titrate dose 1-5 mcg/Kg</td>
+        </tr>
+        <tr>
+          <td>Fentanyl IV Infusion</td>
+          <td><button type="button" onclick="nyiv()">Calculate</button></td>
+          <td id="nyiv1"></td>
+          <td>in 50mL NS, 1mL/hr = 2mcg/Kg/min. (1–6 micrograms/kg/hour)</td>
+        </tr>
+        <tr>
+          <td>Ketamine IV</td>
+          <td><button type="button" onclick="kiv()">Calculate</button></td>
+          <td id="kiv1"></td>
+          <td>2 mg/Kg. 4mg/Kg can be used IM</td>
+        </tr>
+        <tr>
+          <td>Ketamine IV Infusion</td>
+          <td><button type="button" onclick="kiev()">Calculate</button></td>
+          <td id="kiev1"></td>
+          <td>in 50mL NS, 1mL/hr = 20 MCG/Kg/min. (10-45 micrograms/Kg/min)</td>
+        </tr>
+        <tr>
+          <td>Propfol IV</td>
+          <td><button type="button" onclick="propiv()">Calculate</button></td>
+          <td id="propiv1"></td>
+          <td>5 mg/Kg. Titrate dose 2-5 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Thiopentone IV</td>
+          <td><button type="button" onclick="thiopiv()">Calculate</button></td>
+          <td id="thiopiv1"></td>
+          <td>5 mg/Kg. Titrate dose 2-5 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Etomidate IV</td>
+          <td><button type="button" onclick="etom()">Calculate</button></td>
+          <td id="etom1"></td>
+          <td>0.3 mg/Kg. T itrate dose 0.1-0.4 mg/Kg</td>
+        </tr>
+        <tr>
+          <td>Etomidate IV</td>
+          <td><button type="button" onclick="hytom()">Calculate</button></td>
+          <td id="hytom1"></td>
+          <td>2mg/Kg IVI hydrocortisone if used</td>
+        </tr>
+        <tr>
+          <td>Remifentanyl IV</td>
+          <td><button type="button" onclick="feniv()">Calculate</button></td>
+          <td id="feniv1"></td>
+          <td>1 MCG/Kg. (0.1–1 micrograms/Kg) over at least 30 seconds</td>
+        </tr>
+        <tr>
+          <td>Remifentanyl Infusion</td>
+          <td><button type="button" onclick="remif()">Calculate</button></td>
+          <td id="remif1"></td>
+          <td>in 50mL NS, 1mL/hr = 1mcg/Kg/min</td>
+        </tr>
+        <tr>
+          <td>Atracurium IV</td>
+          <td><button type="button" onclick="atra()">Calculate</button></td>
+          <td id="atra1"></td>
+          <td>300–600 micrograms/Kg then 100 - 200micrograms/Kg as required</td>
+        </tr>
+        <tr>
+          <td>Ciastracurium</td>
+          <td><button type="button" onclick="ciast()">Calculate</button></td>
+          <td id="ciast1"></td>
+          <td>150 micrograms/Kg then 30micrograms/Kg as required every 20 min</td>
+        </tr>
+        <tr>
+          <td>Succinyl Choline</td>
+          <td><button type="button" onclick="sucho()">Calculate</button></td>
+          <td id="sucho1"></td>
+          <td>1-2 mg/Kg, repeat every 5-10mins as necessary</td>
+        </tr>
+    </table>
+</div>
+
+
+<!-- Antimicrobials -->
+<div id="Mmicro" class="none scrollbar center">
+    <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Benzyl Penicillin IV</td>
+          <td><button type="button" onclick="benzil()">Calculate</button></td>
+          <td id="benzil1"></td>
+          <td>50 000 Units/Kg</td>
+        </tr>
+        <tr>
+          <td>CoAmoxiclav IV</td>
+          <td><button type="button" onclick="xiv()">Calculate</button></td>
+          <td id="xiv1"></td>
+          <td>30 mg/Kg every 8hours</td>
+        </tr>
+        <tr>
+          <td>Gentamicin IV</td>
+          <td><button type="button" onclick="gentiv()">Calculate</button></td>
+          <td id="gentiv1"></td>
+          <td>5 mg/Kg every 24 hours</td>
+        </tr>
+        <tr>
+          <td>Amikacin IV</td>
+          <td><button type="button" onclick="amiv()">Calculate</button></td>
+          <td id="amiv1"></td>
+          <td>15 mg/Kg every 24 hours</td>
+        </tr>
+        <tr>
+          <td>Ceftriaxone IV</td>
+          <td><button type="button" onclick="triv()">Calculate</button></td>
+          <td id="triv1"></td>
+          <td>50 mg/Kg (Double in Severe Infections)</td>
+        </tr>
+        <tr>
+          <td>Cefotaxime IV</td>
+          <td><button type="button" onclick="cefotiv()">Calculate</button></td>
+          <td id="cefotiv1"></td>
+          <td>50 mg/Kg (Double in Severe Infections)</td>
+        </tr>
+        <tr>
+          <td>Cefuroxime IV</td>
+          <td><button type="button" onclick="feciv()">Calculate</button></td>
+          <td id="feciv1"></td>
+          <td>25 mg/Kg every 8 hours</td>
+        </tr>
+        <tr>
+          <td>Ceftazidime IV</td>
+          <td><button type="button" onclick="zidiv()">Calculate</button></td>
+          <td id="zidiv1"></td>
+          <td>50 mg/Kg (Double in Severe Infections)</td>
+        </tr>
+        <tr>
+          <td>Nystatin PO</td>
+          <td><button type="button" onclick="nyspo()">Calculate</button></td>
+          <td id="nyspo1">100 000 Units</td>
+          <td>100 000 Units every 6 hours</td>
+        </tr>
+        <tr>
+          <td>Meropenem IV</td>
+          <td><button type="button" onclick="merov()">Calculate</button></td>
+          <td id="merov1"></td>
+          <td>40 mg/Kg every 8 hours</td>
+        </tr>
+        <tr>
+          <td>Vancomycin IV</td>
+          <td><button type="button" onclick="vanciv()">Calculate</button></td>
+          <td id="vanciv1"></td>
+          <td>15 mg/Kg every 8 hours (Infuse over 60 minutes)/15 mg/Kg every 12 hours in Neonates</td>
+        </tr>
+        <tr>
+          <td>Clarithromycin IV</td>
+          <td><button type="button" onclick="clathiv()">Calculate</button></td>
+          <td id="clathiv1"></td>
+          <td>7.5mg/Kg (maximum 500mg) every 12 hours</td>
+        </tr>
+        <tr>
+          <td>Tazobactam/Piperacillin IV</td>
+          <td><button type="button" onclick="tazov()">Calculate</button></td>
+          <td id="tazov1"></td>
+          <td>90 mg/kg every 6 – 8 hours maximum 4.5g every 6 hours</td>
+        </tr>
+        <tr>
+          <td>Cotrimoxazole IV (PJP)</td>
+          <td><button type="button" onclick="cotiv()">Calculate</button></td>
+          <td id="cotiv1"></td>
+          <td>120mg/Kg (20mg Trimethoprim + 100mg Sulphamethoxazole) Q6hrs</td>
+        </tr>
+        <tr>
+          <td>Fluconazole IV</td>
+          <td><button type="button" onclick="fluv()">Calculate</button></td>
+          <td id="fluv1"></td>
+          <td>3-6mg/Kg (maximum 200 mg) daily</td>
+        </tr>
+        <tr>
+          <td>Aciclovir IV</td>
+          <td><button type="button" onclick="clov()">Calculate</button></td>
+          <td id="clov1"></td>
+          <td>20 mg/Kg every 8 hours (Can use 500mg/sqm. BSA)</td>
+        </tr>
+    </table>
+</div>
+
+<!-- Other medications content -->
+<div id="Mother" class="none scrollbar center">
+    <table style="max-width: 100%;" class="tcenter">
+        <caption class="center"><b>GERTRUDE'S CHILDREN'S HOSPITAL - EMERGENCY MEDICATIONS CALCULATOR</b></caption>
+        <tr>
+          <th>Medication</th>
+          <th>Calculations</th>
+          <th>Dosage</th>
+          <th>Dosage Guide</th>
+        </tr>
+
+        <tr>
+          <td>Omeprazole IV</td>
+          <td><button type="button" onclick="omep()">Calculate</button></td>
+          <td id="omep1"></td>
+          <td>0.5mg/Kg once a day (max 20 - 40 mg)</td>
+        </tr>
+        <tr>
+          <td>Frusemide IV</td>
+          <td><button type="button" onclick="furiv()">Calculate</button></td>
+          <td id="furiv1"></td>
+          <td>0.5 - 2 mg/Kg every 8 - 24 hours</td>
+        </tr>
+        <tr>
+          <td>Spironolactone</td>
+          <td><button type="button" onclick="spiro()">Calculate</button></td>
+          <td id="spiro1"></td>
+          <td>0.5-1.5 mg/Kg Q12 - 24 hrs (max 9 mg/Kg)</td>
+        </tr>
+        <tr>
+          <td>Digoxin IV</td>
+          <td><button type="button" onclick="gidiv()">Calculate</button></td>
+          <td id="gidiv1"></td>
+          <td>10MCG/Kg 8hrly for 24 hrs then once daily</td>
+        </tr>
+        <tr>
+          <td>Aminophylline IV</td>
+          <td><button type="button" onclick="nophiv()">Calculate</button></td>
+          <td id="nophiv1"></td>
+          <td>0.5-1mg/Kg/hr adjusted to plasma levels</td>
+        </tr>
+        <tr>
+          <td>Hydrocortisone IV</td>
+          <td><button type="button" onclick="cortiv()">Calculate</button></td>
+          <td id="cortiv1"></td>
+          <td>2-4mg/Kg every 6 hours</td>
+        </tr>
+        <tr>
+          <td>Dexamethasone</td>
+          <td><button type="button" onclick="thasone()">Calculate</button></td>
+          <td id="thasone1"></td>
+          <td>40-160MCG/Kg Q12-24 hours (Max 20mg)</td>
+        </tr>
+        <tr>
+          <td>Diazepam IV</td>
+          <td><button type="button" onclick="mapiv()">Calculate</button></td>
+          <td id="mapiv1"></td>
+          <td>10MCG/Kg/hr adjusted PRN (max 60MCG/hr)</td>
+        </tr>
+        <tr>
+          <td>Baclofen PO</td>
+          <td><button type="button" onclick="baclopo()">Calculate</button></td>
+          <td id="baclopo1"></td>
+          <td>100MCG/Kg every 6hrs max 40mg</td>
+        </tr>
+        <tr>
+          <td>Ibuprofen PO</td>
+          <td><button type="button" onclick="ibupo()">Calculate</button></td>
+          <td id="ibupo1"></td>
+          <td>4-10mg/Kg every 6-8hrs</td>
+        </tr>
+        <tr>
+          <td>Lactulose PO</td>
+          <td><button type="button" onclick="lacupo()">Calculate</button></td>
+          <td id="lacupo1"></td>
+          <td>0.5 ml/Kg 12 hourly. Adjust to obtain 2-3 stools/day</td>
+        </tr>
+        <tr>
+          <td>Keyaxalate PO/PR</td>
+          <td><button type="button" onclick="xalapo()">Calculate</button></td>
+          <td id="xalapo1"></td>
+          <td>1 g/Kg PO every 6hours OR 1 mg/Kg every 2-6 hours Rectally</td>
+        </tr>
+        <tr>
+          <td>Calcium IV/PO</td>
+          <td><button type="button" onclick="capo()">Calculate</button></td>
+          <td id="capo1"></td>
+          <td>40 mg/Kg/day</td>
+        </tr>
+        <tr>
+          <td>Phosphate PO (age < 5yr)</td>
+          <td><button type="button" onclick="phopo100()">Calculate</button></td>
+          <td id="phopo1001"></td>
+          <td>2-3 mmol/Kg/day in 2-3 divided doses. Max 100 mmol/day</td>
+        </tr>
+        <tr>
+          <td>Iron PO</td>
+          <td><button type="button" onclick="nopi()">Calculate</button></td>
+          <td id="nopi1"></td>
+          <td>3-6 mg/Kg once a day. Max 100 mg daily</td>
+        </tr>
+        <tr>
+          <td>Potassium Citrate PO</td>
+          <td><button type="button" onclick="potaci()">Calculate</button></td>
+          <td id="potaci1"></td>
+          <td>1 mmol/Kg 2-3 times daily adjust to Potassium levels</td>
+        </tr>
+        <tr>
+          <td>Potassium Chloride IV</td>
+          <td><button type="button" onclick="chloriv()">Calculate</button></td>
+          <td id="chloriv1"></td>
+          <td>0.5 - 1 mmol/Kg 2-3 times daily adjust to Potassium levels</td>
+        </tr>
+        <tr>
+          <td>Glycopyrollate</td>
+          <td><button type="button" onclick="glycor()">Calculate</button></td>
+          <td id="glycor1"></td>
+          <td>20-40MCG/Kg every 8hours max 600MCG/day</td>
+        </tr>
+        <tr>
+          <td>Ipratropium Bromide NEB</td>
+          <td><button type="button" onclick="bromid()">Calculate</button></td>
+          <td id="bromid1">Use the dosage guide information</td>
+          <td>Age <6 yr 125MCG; Age 6-12 yr 250MCG; Age >12 yr 500MCG every 6 - 8 hours</td>
+        </tr>
+        <tr>
+          <td>Hyoscine Bromide IM/IV</td>
+          <td><button type="button" onclick="hybro()">Calculate</button></td>
+          <td id="hybro1"></td>
+          <td>300-500 MCG/Kg (max. 5 mg) every 4 hours</td>
+        </tr>
+        <tr>
+          <td>Diclofenac PO</td>
+          <td><button type="button" onclick="fecopo()">Calculate</button></td>
+          <td id="fecopo1"></td>
+          <td>0.5 - 1 mg/Kg every 8-12 hours</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+<footer>
+     <p class="center">&copy; 2022 Gertrude's Children's Hospital<p>
+</footer>
+</html>

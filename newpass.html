@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <header>
+  	<meta charset="utf-8"/>
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  	<meta name="author" content="Goro Collins"/>
+  	<title>PASSWORD PROTECETED LINK</title>
+    <style type="text/css">
+      body{
+        background-color: lightskyblue; 
+      }
+    </style>
+  </header>
+  <body style="text-align: center;">
+  	<p>Welcome to the QPS audit tools.</p>
+  	<p>Enter your password to access the audits for the clinic you want</p>
+    <strong>Enter password for embakasi:</strong> <input type="password" value="FakePSW" id="password">
+    <input type="checkbox" onclick="myFunction()">Show Password
+    <br/><br/>
+    <a href="index.html" onclick="javascript:return validatePass()">Enter your password and click this</a>
+    <script>
+      function validatePass(){
+      if(document.getElementById('password').value == 'emba.1'){
+        return true;
+      }else{
+        alert('wrong password!!' + '\n' + 'Please contact the administrator for the password');
+        return false;
+     }
+     }
+     function myFunction() {
+       var x = document.getElementById("password");
+       if (x.type === "password") {
+             x.type = "text";
+      } else {
+      x.type = "password";
+  }
+}
+    </script>
+  </body>
